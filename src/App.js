@@ -2,10 +2,6 @@ import logo from './logo.svg';
 import './App.css';
 import {useState, useEffect} from "react";
 
-const random = (max) => {
-  return Math.floor(Math.random() * Math.floor(max)) + 1;
-};
-
 const checkCharMatch = (guess, answer) => {
   let guessArray = guess.split("")
   let answerArray = answer.split("")
@@ -24,7 +20,6 @@ function GuessInput({ onGuess }) {
   const [val, setVal] = useState("");
 
   const handleChange = e => setVal(e.target.value);
-
   const handleKeyDown = e => {
     if (e.keyCode === 13) {
       onGuess(val)
@@ -37,6 +32,7 @@ function GuessInput({ onGuess }) {
       <input
         id="input"
         type="text"
+        placeholder="_____"
         value={val}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
@@ -44,11 +40,11 @@ function GuessInput({ onGuess }) {
       {/*<button type="submit" onClick={handleClick}>予想する</button>*/}
     </div>
   );
+
 }
 
-function Guess({children, match}) {
-  let i = 0
-
+function Guess({children, answer}) {
+  const match = checkCharMatch(children, answer)
   return (
     <div>
       {[...children].map((char, i) => {
@@ -58,59 +54,57 @@ function Guess({children, match}) {
         >
             {char}
         </p>
-        i++;
       })}
     </div>
   )
 }
 
 function App() {
-  const max = 50;
-  const initialCount = 6;
-  const [answer, setAnswer] = useState("apple");
-  const [count, setCount] = useState(initialCount);
-  const [message, setMessage] = useState('');
+
+  const answer = "apple"
   const [guesses, setGuesses] = useState([]);
+  const [isCleared, setIsCleared] = useState(false);
+
+  const maxTrialCount = 6;
+  const trialsLeft = () => {
+    return maxTrialCount - guesses.length
+  }
 
   const judge = guess => {
-    if (count === 0) return;
+    let lowerCasedGuess = guess.toLowerCase()
 
-    setCount(count - 1);
+    if (trialsLeft() <= 0) return;
+    if (lowerCasedGuess.length !== 5) return;
+    if (isCleared) return;
 
-    if (guess === answer) {
-      setMessage('正解です！');
-    } else if (count === 1) {
-      setMessage('残念でした！ 正解は' + answer);
+    if (lowerCasedGuess === answer) {
+      setIsCleared(true)
     }
 
-    setGuesses([...guesses, guess]);
-    console.log(guesses)
+    setGuesses([...guesses, lowerCasedGuess]);
   };
 
-  const replay = () => {
-    setAnswer(random(max));
-    setCount(initialCount);
-    setMessage('');
-  };
-
-  let i = 0
   return (
     <>
-      {/*<p>{message}</p>*/}
-      <p>あと{count}回</p>
-      {/*<p>*/}
-      {/*  <button onClick={replay}>はじめから</button>*/}
-      {/*</p>*/}
-      {guesses.map(guess => {
+      <p id="title"> Clonedle </p>
+      {guesses.map((guess, i) => {
         console.log(guess)
-        i++
         return <Guess
           key={i}
-          match={checkCharMatch(guess, answer)}
+          answer={answer}
         >
           {guess}
         </Guess>
       })}
+      {[...Array(maxTrialCount-guesses.length)].map((e,i) => {
+        return <Guess
+          key={i}
+          answer={answer}
+        >
+          {"     "}
+        </Guess>
+      })
+      }
       <GuessInput onGuess={judge} />
     </>
   );
