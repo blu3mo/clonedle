@@ -5,9 +5,57 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+    background-color: black;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.guessChar {
+    display: inline-block;
+    background-color: #3a3a3c;
+    font-family: "Helvetica Neue";
+    font-size: 25px;
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
+    line-height:50px;
+    margin: 3px;
+    text-align: center;
+    text-transform: capitalize;
+    color: white;
+}
+
+.guessChar.eat {
+    background-color: #538d4e;
+}
+.guessChar.bite {
+    background-color: #b59f3b;
+}
+
+#root {
+    text-align: center;
+}
+
+#form {
+    margin: 3px
+}
+
+#input {
+    background-color: #3a3a3c;
+    width: 255px;
+    height: 50px;
+    padding-left: 17px;
+    letter-spacing: 38.5px;
+
+    border-width: 0px;
+    font-family: "Helvetica Neue";
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+
+    overflow-wrap: normal;
 }
