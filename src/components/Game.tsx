@@ -5,7 +5,7 @@ import {Guess} from "../models/Guess";
 
 const Game: React.VFC = () => {
     const answer = "apple"
-    const [guesses, setGuesses] = React.useState<string[]>([]);
+    const [guesses, setGuesses] = React.useState<Guess[]>([]);
     const [isCleared, setIsCleared] = React.useState(false);
 
     const maxTrialCount = 6;
@@ -13,32 +13,29 @@ const Game: React.VFC = () => {
         return maxTrialCount - guesses.length
     }
 
-    const judge = (guess: string) => {
-        let lowerCasedGuess = guess.toLowerCase()
-
+    const onGuess = (input: string) => {
         if (trialsLeft() <= 0) return;
-        if (lowerCasedGuess.length !== 5) return;
+        if (input.length !== 5) return;
         if (isCleared) return;
 
-        if (lowerCasedGuess === answer) {
+        if (input === answer) {
             setIsCleared(true)
         }
 
-        setGuesses([...guesses, lowerCasedGuess]);
+        setGuesses([...guesses, new Guess(input)]);
     };
 
     return (
-        <>
-            <p id="title"> Clonedle </p>
+        <div id="game">
             {guesses.map((guess, i) => {
                 console.log(guess)
                 return <GuessRow
                     key={i}
-                    guess={new Guess(guess)}
+                    guess={guess}
                     answer={answer}
                 />
             })}
-            {[...Array(maxTrialCount-guesses.length)].map((e,i) => {
+            {[...Array(maxTrialCount-guesses.length)].map((_,i) => {
                 return <GuessRow
                     key={i}
                     guess={new Guess("     ")}
@@ -46,8 +43,8 @@ const Game: React.VFC = () => {
                 />
             })
             }
-            <GuessInput onGuess={judge} />
-        </>
+            <GuessInput onGuess={onGuess} />
+        </div>
     );
 }
 

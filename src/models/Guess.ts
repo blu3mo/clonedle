@@ -10,7 +10,7 @@ export class Guess {
     value: string
 
     constructor(value: string) {
-        this.value = value
+        this.value = value.toLowerCase()
     }
 
     checkMatch(answer: string): CharMatch[] {

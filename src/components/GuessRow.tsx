@@ -15,7 +15,7 @@ const GuessRow: React.VFC<{guess: Guess, answer: string}> = (props) => {
         }
     })
     return (
-        <div>
+        <div id="guessRow">
             {[...props.guess.value].map((char, i) => {
                 return <p
                     className={"guessChar " + matchClassNames[i]}
