@@ -1,6 +1,7 @@
-import Guess from "./Guess"
+import GuessRow from "./GuessRow"
 import GuessInput from "./GuessInput"
 import React from "react";
+import {Guess} from "../models/Guess";
 
 const Game: React.VFC = () => {
     const answer = "apple"
@@ -31,20 +32,18 @@ const Game: React.VFC = () => {
             <p id="title"> Clonedle </p>
             {guesses.map((guess, i) => {
                 console.log(guess)
-                return <Guess
+                return <GuessRow
                     key={i}
+                    guess={new Guess(guess)}
                     answer={answer}
-                >
-                    {guess}
-                </Guess>
+                />
             })}
             {[...Array(maxTrialCount-guesses.length)].map((e,i) => {
-                return <Guess
+                return <GuessRow
                     key={i}
+                    guess={new Guess("     ")}
                     answer={answer}
-                >
-                    {"     "}
-                </Guess>
+                />
             })
             }
             <GuessInput onGuess={judge} />
